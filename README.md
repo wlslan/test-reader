@@ -1,4 +1,6 @@
 # test-reader
+## Darba autors
+Ilgvars Ročāns
 ## Projekta apraksts
 Programmas mērķis ir ļaut skolotājiem nobildēt vai ieskenēt savu skolēnu rakstītos pārbaudes darbus, bildi ievadīt programmā un automātiski salīdzināt viņu atbildes ar pareizajām. Tāpēc tā skaitas datorredzes programma – tāda, kas nosaka kādi priekšmeti ir redzami attēlos. Es līdz idejai nonācu, iedvesmojoties no skolotāja dotajām programmas idejām. Man interesēja šī ideja, jo tā, manuprāt, varētu būt diezgan noderīga un viegli izveidojama. Turklāt, šī programma ir īpaša ar to, ka, kaut vai tā ir datorredzes programma, tā ir pietiekami vienkārša, lai to varētu izpildīt manuāli rakstot algoritmu objekta atpazīšanai, neizmantojot mašīnmācīšanos kā daudzas citas datorredzes programmas.
 
@@ -11,3 +13,7 @@ Programma nav paredzēta teksta atbilžu atpazīšanai. No tā nebūtu jēgas, j
 Darbā atbildes būtu atzīmētas, iekrāsojot reģionus Word dokumentā, izvēloties reģionus attēlā vai kādā līdzīgā veidā. Ja būtu vienošanās par pārbaudes darba formātu, tad šo soli nevajadzētu atkārtoti veikt. Lietotājs arī izvēlētos, kā atbildes tiek vērtētas, lai varētu pieļaut uzdevumus ar vairākām atbildēm, laukumus kļūdu labojumiem u.t.t.
 
 Programma būs datora lietotne. Kaut vai telefona lietotne atļautu vieglāk ievietot nofotogrāfētus pārbaudes darbus, datora lietotne ir piemērotāka skenētu attēlu ievietošanai ir pārbaudes darbu atbilžu un jautājumu izvietojumu mainīšanai.
+## Risinājuma arhitektūra
+Risinājuma arhitektūra būs redzama failā docs/model.png (pagaidām nepabeigts)
+## Darba plāns
+(nepabeigts)
