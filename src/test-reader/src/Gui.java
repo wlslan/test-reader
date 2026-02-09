@@ -5,7 +5,7 @@ import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class Gui extends Frame {
-    private static FileNameExtensionFilter imageFilter =new FileNameExtensionFilter("Image files",ImageIO.getReaderFileSuffixes());
+    private static final FileNameExtensionFilter imageFilter =new FileNameExtensionFilter("Image files",ImageIO.getReaderFileSuffixes());
     private JButton createLayoutButton;
     private JButton readTestButton;
     private JFileChooser test;
@@ -23,6 +23,5 @@ public class Gui extends Frame {
     }
     static void main(String[] args) {
         new Gui();
-        Lang.setLanguage();
     }
 }
