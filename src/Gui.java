@@ -21,9 +21,11 @@ public class Gui extends JFrame {
             if (response == JFileChooser.APPROVE_OPTION) {
                 try {
                     currentTestLayoutImage=ImageIO.read(fileChooser.getSelectedFile());
-                    testImageLabel=new JLabel(new ImageIcon (currentTestLayoutImage));
+                    currentTestLayoutImage=Utils.resizeImage(currentTestLayoutImage,100,100, Utils.ImageFit.COVER);
+                    testImageLabel.setIcon(new ImageIcon (currentTestLayoutImage));
                     CardLayout cl = (CardLayout) rootPanel.getLayout();
                     cl.show(rootPanel,editorSceneName);
+                    gui.setVisible(true);
                     System.out.println("BOILS");
                 } catch (IOException e) {
                     System.out.println("LIGMA");
@@ -47,13 +49,14 @@ public class Gui extends JFrame {
     private BufferedImage currentTestLayoutImage;
 
     private JPanel rootPanel;
-    public Gui(LayoutManager layout) {
+    private CardLayout cardLayout;
+    public Gui() {
         gui=this;
-        rootPanel=new JPanel(layout);
+        cardLayout = new CardLayout();
+        rootPanel=new JPanel(cardLayout);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Test reader");
-        setSize(900,300);
-        setLayout(new CardLayout());
+        setSize(1920,1080);
         baseScene=new JPanel(new FlowLayout());
         baseScene.setSize(getSize());
         editorButton =new JButton("Izveidot pārbaudes darba formātu");
@@ -64,14 +67,14 @@ public class Gui extends JFrame {
         baseScene.add(readTestButton);
         rootPanel.add(baseScene, baseSceneName);
         editorScene = new JPanel(new FlowLayout());
+        testImageLabel= new JLabel();
+        editorScene.add(testImageLabel);
         rootPanel.add(editorScene,editorSceneName);
-        baseScene.setVisible(true);
-        editorScene.setVisible(true);
-        rootPanel.setVisible(true);
+        cardLayout.show(rootPanel,baseSceneName);
         add(rootPanel);
         setVisible(true);
     }
     static void main(String[] args) {
-        new Gui(new CardLayout());
+        new Gui();
     }
 }
