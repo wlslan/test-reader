@@ -1,3 +1,4 @@
+package Utils;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
@@ -9,7 +10,7 @@ public class Utils {
         COVER, //aspect, no less
         FILL //no aspect, exact
     }
-    public static BufferedImage resizeImage(BufferedImage image, int targetHeight,int targetWidth, ImageFit imageFit) {
+    public static BufferedImage resizeImage(BufferedImage image, int targetWidth,int targetHeight, ImageFit imageFit) {
         switch (imageFit)    {
             case FIT -> {
                 int width=image.getWidth(),height=image.getHeight();
@@ -27,11 +28,14 @@ public class Utils {
             }
         }
 
-        BufferedImage bi = new BufferedImage(targetWidth, targetHeight, BufferedImage.TRANSLUCENT);
+        BufferedImage bi = new BufferedImage(targetWidth, targetHeight, BufferedImage.OPAQUE);
         Graphics2D g2d = bi.createGraphics();
         //g2d.addRenderingHints(new RenderingHints(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY));
         g2d.drawImage(image, 0, 0, targetWidth, targetHeight, null);
         g2d.dispose();
         return bi;
+    }
+    public static BufferedImage resizeImage(BufferedImage image, Dimension targetSize, ImageFit imageFit) {
+        return resizeImage(image, targetSize.width, targetSize.height, imageFit);
     }
 }
