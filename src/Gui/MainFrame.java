@@ -25,10 +25,12 @@ public class MainFrame extends JFrame {
 
         setVisible(true);
 
-        setSize(Toolkit.getDefaultToolkit().getScreenSize());
-        setExtendedState(getExtendedState() | MAXIMIZED_BOTH);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(300,300);
+        //setExtendedState(getExtendedState() | MAXIMIZED_BOTH);
         setTitle(programName);
+        DialogSelectFormat buns = new DialogSelectFormat();
+                buns.Open(this);
     }
     public void InitScene(Scene scene) {
         rootPanel.add(scene,scene.name);

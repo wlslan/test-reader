@@ -4,6 +4,7 @@ import java.io.*;
 
 public class SaveDataHandler {
     static final String saveFolder = System.getenv("APPDATA")+"/TestReader/";
+
     public interface SavableObject extends Serializable {
         public String GetSaveFile();
     }

@@ -25,9 +25,13 @@ public class TestFormat implements Serializable {
     transient BufferedImage BaseImage;
     Dimension Placeholder;
 
-    public TestFormat(BufferedImage baseImage, String name) {
+    public TestFormat(BufferedImage baseImage,String name) {
         BaseImage=baseImage;
         Name=name;
+    }
+    @Override
+    public String toString () {
+        return Name;
     }
     private void writeObject(java.io.ObjectOutputStream out) throws IOException {
         out.defaultWriteObject();

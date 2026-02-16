@@ -16,15 +16,12 @@ public final class SceneEditor extends Scene {
         super(new FlowLayout());
         this.mainFrame = mainFrame;
         testImageLabel = new JLabel();
-        testImageLabel.setMinimumSize(new Dimension(640,640));
         add(testImageLabel);
         name=defaultName;
     }
     public void SetImage(File file) throws IOException {
         currentTestLayoutImage = ImageIO.read(file);
-        currentTestLayoutImage = Utils.Utils.resizeImage(currentTestLayoutImage, testImageLabel.getWidth()-10, testImageLabel.getHeight()-10, Utils.Utils.ImageFit.FIT);
-
-        System.out.println(testImageLabel.getWidth());
+        currentTestLayoutImage = Utils.Utils.resizeImage(currentTestLayoutImage, 640, 640, Utils.Utils.ImageFit.FIT);
         testImageLabel.setIcon(new ImageIcon(currentTestLayoutImage));
     }
 }
