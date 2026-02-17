@@ -29,8 +29,6 @@ public class MainFrame extends JFrame {
         setSize(300,300);
         //setExtendedState(getExtendedState() | MAXIMIZED_BOTH);
         setTitle(programName);
-        DialogSelectFormat buns = new DialogSelectFormat();
-                buns.Open(this);
     }
     public void InitScene(Scene scene) {
         rootPanel.add(scene,scene.name);

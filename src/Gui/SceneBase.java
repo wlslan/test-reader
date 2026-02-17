@@ -1,5 +1,8 @@
 package Gui;
 
+import Data.TestFormat;
+
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -12,18 +15,12 @@ public final class SceneBase extends Scene {
     private class EditorButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent evt) {
-            JFileChooser fileChooser = new JFileChooser();
-            fileChooser.setMultiSelectionEnabled(false);
-            fileChooser.setFileFilter(MainFrame.imageFilter);
-            int response=fileChooser.showOpenDialog(mainFrame);
-            if (response == JFileChooser.APPROVE_OPTION) {
-                try {
-                    mainFrame.sceneEditor.SetImage(fileChooser.getSelectedFile());
-                    mainFrame.ChangeScene(mainFrame.sceneEditor);
-                } catch (IOException e) {
-                    throw new RuntimeException(e); //add invalid file alert
-                }
+            Object currentFormat = DialogSelectFormat.Open(mainFrame);
+            if (currentFormat == null) {
+                return;
             }
+            mainFrame.sceneEditor.OpenFormat((TestFormat) currentFormat);
+            mainFrame.ChangeScene(mainFrame.sceneEditor);
         }
     }
     private class ReadTestButtonListener implements ActionListener {

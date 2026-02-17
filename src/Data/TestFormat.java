@@ -1,6 +1,7 @@
 package Data;
 
 import SaveData.SaveDataHandler;
+import Utils.Utils;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -19,15 +20,34 @@ public class TestFormat implements Serializable {
             return saveFile;
         }
     }
+    public static class Question {
+        public enum Type {
+            SINGLE_CHOICE,
+            MULTI_CHOICE
+        }
+    }
+    public static class Answer {
+        public Utils.Rect bounds;
+        public boolean isCorrect;
+        public Answer(Utils.Rect bounds, boolean isCorrect) {
+            this.bounds=bounds;
+            this.isCorrect=isCorrect;
+        }
+    }
+
+
     public static TestFormats testFormats = new TestFormats();
 
-    String Name;
-    transient BufferedImage BaseImage;
-    Dimension Placeholder;
+    public String Name;
+    transient public BufferedImage BaseImage;
+    public LinkedList<Answer> answers;
+    public LinkedList<Question> questions;
 
     public TestFormat(BufferedImage baseImage,String name) {
         BaseImage=baseImage;
         Name=name;
+        answers=new LinkedList<>();
+        questions=new LinkedList<>();
     }
     @Override
     public String toString () {

@@ -11,14 +11,9 @@ void main() throws IOException, ClassNotFoundException {
         // Set System L&F
         UIManager.setLookAndFeel(
                 UIManager.getSystemLookAndFeelClassName());
-    } catch (UnsupportedLookAndFeelException e) {
-        // handle exception
-    } catch (ClassNotFoundException e) {
-        // handle exception
-    } catch (InstantiationException e) {
-        // handle exception
-    } catch (IllegalAccessException e) {
-        // handle exception
+    } catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException |
+             IllegalAccessException e) {
+        //
     }
     new MainFrame();
 }

@@ -1,27 +1,29 @@
 package Gui;
 
-import javax.imageio.ImageIO;
+import Data.TestFormat;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
 public final class SceneEditor extends Scene {
     static final String defaultName = "editor";
+    public EditorCanvas canvas;
+    public EditorAnswerList answerList;
+    public EditorQuestionList questionList;
     public JLabel testImageLabel;
     public BufferedImage currentTestLayoutImage;
+    public boolean saved; //to prevent accidental closing
 
     SceneEditor(MainFrame mainFrame) {
         super(new FlowLayout());
-        this.mainFrame = mainFrame;
-        testImageLabel = new JLabel();
-        add(testImageLabel);
         name=defaultName;
+        this.mainFrame = mainFrame;
+        add(canvas = new EditorCanvas());
+        add(answerList = new EditorAnswerList());
+        add(questionList = new EditorQuestionList());
     }
-    public void SetImage(File file) throws IOException {
-        currentTestLayoutImage = ImageIO.read(file);
-        currentTestLayoutImage = Utils.Utils.resizeImage(currentTestLayoutImage, 640, 640, Utils.Utils.ImageFit.FIT);
-        testImageLabel.setIcon(new ImageIcon(currentTestLayoutImage));
+    public void OpenFormat(TestFormat testFormat) {
+        canvas.SetBaseImage(testFormat.BaseImage);
     }
 }

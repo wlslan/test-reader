@@ -9,17 +9,14 @@ import java.util.LinkedList;
 
 import static Data.TestFormat.testFormats;
 
-public class ComboBoxFormat extends JComboBox<Object> {
-    public ComboBoxFormat(boolean allowCreate) {
+public class ListAnswer extends JList<Object> {
+    public ListAnswer() {
         LinkedList<Object> testFormatsCopy= new LinkedList<Object>();
         for (Object item : testFormats) {
             testFormatsCopy.addLast(item);
         }
-        if (allowCreate) {
-            testFormatsCopy.addFirst(new Object());
-        }
         super(testFormatsCopy.toArray());
-        setRenderer(new DefaultListCellRenderer() {
+        setCellRenderer(new DefaultListCellRenderer() {
             @Override
             public Component getListCellRendererComponent(final JList list, Object value, final int index, final boolean isSelected, final boolean cellHasFocus) {
                 value = (value instanceof TestFormat) ? ((TestFormat) value).Name : "Izveidot jaunu...";
