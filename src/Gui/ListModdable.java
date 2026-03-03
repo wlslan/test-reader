@@ -1,38 +1,39 @@
 package Gui;
 
-import Data.TestFormat;
-
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.*;
 
-public abstract class ListModdable<T> extends JList<T> {
+public abstract class ListModdable<E> extends JPanel {
     private JButton buttonModify,buttonAdd,buttonRemove;
-    private DefaultListModel<T> listModel = new DefaultListModel<T>();
+    protected JList<E> list;
+    protected DefaultListModel<E> listModel;
 
-    public abstract T Default();
-    public abstract void Modify(T obj);
+    public abstract E Default();
+    public abstract void Modify(E obj);
 
     public ListModdable() {
         super();
+        setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
+        list=new JList<>(listModel = new DefaultListModel<>());
         buttonModify=new JButton("Rediģēt");
         buttonAdd=new JButton("Pievienot");
         buttonRemove=new JButton("Izdzēst");
         buttonModify.addActionListener(_ -> {
-            ListModdable outer=ListModdable.this;
-            if (outer.getSelectedIndex()!=-1) {
-                Modify((T) outer.listModel.get(outer.getSelectedIndex()));
+            if (list.getSelectedIndex()!=-1) {
+                Modify(listModel.get(list.getSelectedIndex()));
             }
         });
         buttonAdd.addActionListener(_ -> {
-            ListModdable outer=ListModdable.this;
-            outer.listModel.addElement(Default());
+            listModel.addElement(Default());
         });
         buttonRemove.addActionListener(_ -> {
-            ListModdable outer=ListModdable.this;
-            if (outer.getSelectedIndex()!=-1) {
-                outer.remove(outer.getSelectedIndex());
+            if (list.getSelectedIndex()!=-1) {
+                listModel.remove(list.getSelectedIndex());
             }
         });
+        add(list);
+        add(buttonModify);
+        add(buttonAdd);
+        add(buttonRemove);
     }
 }

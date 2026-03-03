@@ -53,15 +53,19 @@ public class TestFormat implements Serializable {
     public String toString () {
         return Name;
     }
+
+    @Serial
     private void writeObject(java.io.ObjectOutputStream out) throws IOException {
         out.defaultWriteObject();
         ImageIO.write(BaseImage,"png",out);
     }
+    @Serial
     private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
         BaseImage= ImageIO.read(in);
 
     }
+    @Serial
     private void readObjectNoData() throws ObjectStreamException {
 
     }

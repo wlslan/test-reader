@@ -18,7 +18,7 @@ public class DialogSelectFormat {
         comboBox = new ComboBoxFormat(true);
         jPanel.add(comboBox);
     }
-    public static Object Open(MainFrame mainFrame) {
+    public static TestFormat Open(MainFrame mainFrame) {
         int response = JOptionPane.showConfirmDialog(mainFrame, jPanel, "Izvēlieties pārbaudes darba formātu", OK_CANCEL_OPTION);
 
         if (response == JOptionPane.CLOSED_OPTION || response == JOptionPane.CANCEL_OPTION) {
@@ -39,6 +39,6 @@ public class DialogSelectFormat {
                 throw new RuntimeException(e);
             }
         }
-        return value;
+        return (TestFormat)value;
     }
 }
