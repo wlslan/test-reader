@@ -14,13 +14,13 @@ public class Utils {
         switch (imageFit)    {
             case FIT -> {
                 int width=image.getWidth(),height=image.getHeight();
-                float scaleFactor=min((float)targetWidth /width, (float)targetHeight /height);
+                double scaleFactor=min((double)targetWidth /width, (double)targetHeight /height);
                 targetWidth=(int)(width*scaleFactor);
                 targetHeight=(int)(height*scaleFactor);
             }
             case COVER -> {
                 int width=image.getWidth(),height=image.getHeight();
-                float scaleFactor=max((float)targetWidth /width, (float)targetHeight /height);
+                double scaleFactor=max((double)targetWidth /width, (double)targetHeight /height);
                 targetWidth=(int)(width*scaleFactor);
                 targetHeight=(int)(height*scaleFactor);
             }
@@ -40,12 +40,37 @@ public class Utils {
     }
 
     public static class Rect {
-        public float x1,y1,x2,y2;
-        Rect(float x1,float y1,float x2,float y2) {
-            this.x1=x1;
-            this.x2=x2;
-            this.y1=y1;
-            this.y2=y2;
+        public double x0, y0, x1, y1;
+        public Rect(double x0, double y0, double x1, double y1) {
+            Update(x0,y0,x1,y1);
+        }
+        public Rect Update(double x0, double y0, double x1, double y1) {
+            this.x0 = x0;
+            this.x1 = x1;
+            this.y0 = y0;
+            this.y1 = y1;
+            Validate();
+            return this;
+        }
+        public Rect() {
+            this(0f,0f,0f,0f);
+        }
+        private void Validate() {
+            double temp;
+            if (x0>x1) {
+                temp=x0;
+                x0=x1;
+                x1=temp;
+            }
+            if (y0>y1) {
+                temp=y0;
+                y0=y1;
+                y1=temp;
+            }
+            x0=max(0f,x0);
+            y0=max(0f,y0);
+            x1=min(1f,x1);
+            y1=min(1f,y1);
         }
     }
 }

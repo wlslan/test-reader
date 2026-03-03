@@ -24,6 +24,8 @@ public final class SceneEditor extends Scene {
         add(questionList = new EditorQuestionList());
     }
     public void OpenFormat(TestFormat testFormat) {
-        canvas.SetBaseImage(testFormat.BaseImage);
+        canvas.SetFormat(testFormat);
+        answerList.SetFormat(testFormat);
+        questionList.SetFormat(testFormat);
     }
 }

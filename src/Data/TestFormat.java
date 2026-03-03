@@ -4,10 +4,9 @@ import SaveData.SaveDataHandler;
 import Utils.Utils;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.util.LinkedList;
+import java.util.*;
 
 public class TestFormat implements Serializable {
     public static class TestFormats extends LinkedList<TestFormat> implements SaveDataHandler.SavableObject {
@@ -21,17 +20,46 @@ public class TestFormat implements Serializable {
         }
     }
     public static class Question {
+        public static class Answer {
+            public Question question;
+            public Utils.Rect bounds;
+            public boolean isCorrect;
+            public Answer(Question question, Utils.Rect bounds, boolean isCorrect) {
+                this.question=question;
+                this.bounds=bounds;
+                this.isCorrect=isCorrect;
+            }
+            public Answer(Question question, Utils.Rect bounds) {
+                this(question,bounds,false);
+            }
+            @Override
+            public String toString() {
+                return String.format("%s. %s", question, isCorrect ? "Pareizi" : "Nepareizi");
+            }
+        }
+        public List<Answer> answerList = new LinkedList<>();
         public enum Type {
             SINGLE_CHOICE,
-            MULTI_CHOICE
+            MULTI_CHOICE;
+            @Override
+            public String toString() {
+                return switch (this) {
+                    case SINGLE_CHOICE -> "Viena atbilde";
+                    case MULTI_CHOICE -> "Vairākas izvēles";
+                };
+            }
         }
-    }
-    public static class Answer {
-        public Utils.Rect bounds;
-        public boolean isCorrect;
-        public Answer(Utils.Rect bounds, boolean isCorrect) {
-            this.bounds=bounds;
-            this.isCorrect=isCorrect;
+        public Type type;
+        public Question (Type type) {
+            this.type=type;
+        }
+        public Question () {
+            this(Type.SINGLE_CHOICE);
+        }
+
+        @Override
+        public String toString() {
+            return type.toString();
         }
     }
 
@@ -40,28 +68,29 @@ public class TestFormat implements Serializable {
 
     public String Name;
     transient public BufferedImage BaseImage;
-    public LinkedList<Answer> answers;
-    public LinkedList<Question> questions;
+    public LinkedList<Question> questions = new LinkedList<>();
 
     public TestFormat(BufferedImage baseImage,String name) {
         BaseImage=baseImage;
         Name=name;
-        answers=new LinkedList<>();
-        questions=new LinkedList<>();
     }
     @Override
     public String toString () {
         return Name;
     }
-    private void writeObject(java.io.ObjectOutputStream out) throws IOException {
+
+    @Serial
+    private void writeObject(ObjectOutputStream out) throws IOException {
         out.defaultWriteObject();
         ImageIO.write(BaseImage,"png",out);
     }
-    private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
+    @Serial
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
         BaseImage= ImageIO.read(in);
 
     }
+    @Serial
     private void readObjectNoData() throws ObjectStreamException {
 
     }

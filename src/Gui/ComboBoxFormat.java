@@ -11,7 +11,7 @@ import static Data.TestFormat.testFormats;
 
 public class ComboBoxFormat extends JComboBox<Object> {
     public ComboBoxFormat(boolean allowCreate) {
-        LinkedList<Object> testFormatsCopy= new LinkedList<Object>();
+        LinkedList<Object> testFormatsCopy= new LinkedList<>();
         for (Object item : testFormats) {
             testFormatsCopy.addLast(item);
         }
