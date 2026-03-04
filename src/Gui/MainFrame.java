@@ -26,7 +26,7 @@ public class MainFrame extends JFrame {
         setVisible(true);
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(300,300);
+        setSize(1100,600);
         //setExtendedState(getExtendedState() | MAXIMIZED_BOTH);
         setTitle(programName);
     }

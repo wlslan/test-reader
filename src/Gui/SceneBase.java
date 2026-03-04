@@ -37,7 +37,7 @@ public final class SceneBase extends Scene {
     }
 
     SceneBase(MainFrame mainFrame) {
-        super(new FlowLayout());
+        super();
         this.mainFrame = mainFrame;
         name=defaultName;
         setSize(getSize());

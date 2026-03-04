@@ -6,7 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class EditorAnswerList extends JPanel {
-    public ListModdable<TestFormat.Question.Answer> answerList;
+    public ListModdable<TestFormat.Question.Answer> list;
     public JPanel answerPanel;
     public JPanel nullPanel;
     public final String answerPanelName="answer";
@@ -15,22 +15,37 @@ public class EditorAnswerList extends JPanel {
 
     public TestFormat.Question activeQuestion;
 
-    public EditorAnswerList() {
-        super();
-        setLayout(cardLayout = new CardLayout());
-        answerList= new ListModdable<TestFormat.Question.Answer>() {
-            @Override
-            public TestFormat.Question.Answer Create() {
+    public EditorCanvas canvas;
 
-                return new TestFormat.Question.Answer(activeQuestion,);
+    public EditorAnswerList(SceneEditor scene) {
+        canvas =scene.canvas;
+        setLayout(cardLayout = new CardLayout());
+        list = new ListModdable<>() {
+            @Override
+            public void Create() {
+                canvas.CreateRect(rect -> {
+                    if (rect == null) {
+                        return;
+                    }
+                    TestFormat.Question.Answer answer = new TestFormat.Question.Answer(rect);
+                    AddList(answer);
+                    canvas.CreateAnswer(answer);
+                });
             }
 
             @Override
-            public void Modify(TestFormat.Question.Answer obj) {
-                return;
+            public void Modify(TestFormat.Question.Answer answer) {
+
+                canvas.ModifyAnswer(answer);
+            }
+
+            @Override
+            public void Destroy(TestFormat.Question.Answer answer, int index) {
+                canvas.DestroyAnswer(answer);
+                RemoveList(index);
             }
         };
-        answerList.list.setCellRenderer(new DefaultListCellRenderer() {
+        list.list.setCellRenderer(new DefaultListCellRenderer() {
             @Override
             public Component getListCellRendererComponent(final JList list, Object value, final int index, final boolean isSelected, final boolean cellHasFocus) {
                 value= String.format("%d. %s", index,value.toString());
@@ -38,11 +53,12 @@ public class EditorAnswerList extends JPanel {
             }
         });
         answerPanel=new JPanel();
-        answerPanel.add(answerList);
+        answerPanel.add(list);
         nullPanel = new JPanel();
         nullPanel.add(new JLabel("Nav izvēlēts jautājums"));
         add(answerPanel,answerPanelName);
         add(nullPanel,nullPanelName);
+        SetQuestion(null);
     }
     public void SetQuestion(TestFormat.Question question) {
         activeQuestion=question;
@@ -50,10 +66,7 @@ public class EditorAnswerList extends JPanel {
             cardLayout.show(this,nullPanelName);
             return;
         }
-        answerList.listModel.clear();
-        for (TestFormat.Question.Answer answer : question.answerList) {
-            answerList.listModel.addElement(answer);
-        }
+        list.model.ChangeList(question.answerList);
         cardLayout.show(this,answerPanelName);
     }
 }

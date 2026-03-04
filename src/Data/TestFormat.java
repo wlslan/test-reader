@@ -1,7 +1,7 @@
 package Data;
 
 import SaveData.SaveDataHandler;
-import Utils.Utils;
+import Utils.Utils.UnitRect;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -21,20 +21,21 @@ public class TestFormat implements Serializable {
     }
     public static class Question {
         public static class Answer {
-            public Question question;
-            public Utils.Rect bounds;
+            public UnitRect bounds;
             public boolean isCorrect;
-            public Answer(Question question, Utils.Rect bounds, boolean isCorrect) {
-                this.question=question;
+            public Answer(UnitRect bounds, boolean isCorrect) {
                 this.bounds=bounds;
                 this.isCorrect=isCorrect;
             }
-            public Answer(Question question, Utils.Rect bounds) {
-                this(question,bounds,false);
+            public Answer(UnitRect bounds) {
+                this(bounds,false);
+            }
+            public Answer() {
+                this(null,false);
             }
             @Override
             public String toString() {
-                return String.format("%s. %s", question, isCorrect ? "Pareizi" : "Nepareizi");
+                return String.format("%s", isCorrect ? "Pareizi" : "Nepareizi");
             }
         }
         public List<Answer> answerList = new LinkedList<>();
