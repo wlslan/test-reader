@@ -11,13 +11,17 @@ public class SaveDataHandler {
     public static String GetSaveFilePath(SavableObject object) {
         return saveFolder+object.GetSaveFile();
     }
-    public static void writeFile (SavableObject object) throws IOException {
+    public static void writeFile (SavableObject object)  {
         File file = new File(GetSaveFilePath(object));
         if (!file.exists()) {
             if (file.getParentFile() != null) {
                 file.getParentFile().mkdirs();
             }
-            file.createNewFile();
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
         FileOutputStream fileOut = new FileOutputStream(file);
         ObjectOutputStream objOut = new ObjectOutputStream(fileOut);

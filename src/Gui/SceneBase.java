@@ -7,6 +7,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 
 public final class SceneBase extends Scene {
@@ -29,9 +31,20 @@ public final class SceneBase extends Scene {
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setMultiSelectionEnabled(true);
             fileChooser.setFileFilter(MainFrame.imageFilter);
+            Object currentFormat = DialogSelectFormat.Open(mainFrame);
+            if (currentFormat==null) {
+                return;
+            }
             int response=fileChooser.showOpenDialog(mainFrame);
             if (response == JFileChooser.APPROVE_OPTION) {
-                //todo (getSelectedFiles plural
+                for (File file : fileChooser.getSelectedFiles()) {
+                    try {
+                        BufferedImage testImage = ImageIO.read(fileChooser.getSelectedFile());
+                        ReadTest(testImage,currentFormat);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
             }
         }
     }
