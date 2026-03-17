@@ -2,6 +2,7 @@ package Utils;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.Serializable;
 
 import static java.lang.Math.*;
 
@@ -36,22 +37,9 @@ public class Utils {
     public static Dimension FitDimension(Dimension dim, Dimension target,Fit fit) {
         return FitDimension(dim,target.width, target.height, fit);
     }
-    public static BufferedImage resizeImage(BufferedImage image, int targetWidth,int targetHeight) {
-        if (image.getWidth()==targetWidth && image.getHeight()==targetHeight) {
-            return image;
-        }
-        BufferedImage bi = new BufferedImage(targetWidth, targetHeight, BufferedImage.OPAQUE);
-        Graphics2D g2d = bi.createGraphics();
-        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-        g2d.drawImage(image, 0, 0, targetWidth, targetHeight, null);
-        g2d.dispose();
-        return bi;
-    }
-    public static BufferedImage resizeImage(BufferedImage image, Dimension targetSize) {
-        return resizeImage(image, targetSize.width, targetSize.height);
-    }
 
-    public static class UnitRect {
+
+    public static class UnitRect implements Serializable {
         public double x, y, width, height;
         public UnitRect(double x, double y, double width, double height) {
             Update(x, y, width, height);

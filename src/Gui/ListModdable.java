@@ -10,7 +10,7 @@ public abstract class ListModdable<E> extends JPanel {
     public JList<E> list;
     public ExternalListModel<E> model;
     public abstract void Create();
-    public abstract void Modify(E obj);
+    public abstract void Modify(E obj, int index);
     public abstract void Destroy(E obj, int index);
 
     public void AddList(E e) {
@@ -24,6 +24,13 @@ public abstract class ListModdable<E> extends JPanel {
             model.remove(index);
         }
         list.setSelectedIndex(Math.max(index-1,0));
+    }
+    public void ModifyList(int index) {
+        if (index==-1) {
+            return;
+        }
+        E value = model.get(index);
+        model.set(index,value);
     }
     public void ClearList() {
         model.clear();
@@ -40,7 +47,7 @@ public abstract class ListModdable<E> extends JPanel {
         buttonAdd=new JButton("Pievienot");
         buttonRemove=new JButton("Izdzēst");
         buttonModify.addActionListener(_ -> {
-            Modify(GetSelectedValue());
+            Modify(GetSelectedValue(),list.getSelectedIndex());
         });
         buttonAdd.addActionListener(_ -> {
             Create();

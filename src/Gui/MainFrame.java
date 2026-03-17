@@ -8,15 +8,23 @@ import java.awt.*;
 public class MainFrame extends JFrame {
     public static final String programName = "Test reader";
     public static final FileNameExtensionFilter imageFilter =new FileNameExtensionFilter("Image files",ImageIO.getReaderFileSuffixes());
+
+    public static MainFrame mainFrame;
+
     public SceneBase sceneBase;
     public SceneEditor sceneEditor;
 
     private JPanel rootPanel;
     private CardLayout cardLayout;
+    public JMenuBar menuBar;
+
+
     public MainFrame() {
+        mainFrame=this;
         cardLayout = new CardLayout();
         rootPanel=new JPanel(cardLayout);
         add(rootPanel);
+        setJMenuBar(menuBar = new JMenuBar());
 
         InitScene(sceneBase = new SceneBase(this));
         InitScene(sceneEditor = new SceneEditor(this));

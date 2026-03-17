@@ -19,8 +19,8 @@ public class TestFormat implements Serializable {
             return saveFile;
         }
     }
-    public static class Question {
-        public static class Answer {
+    public static class Question implements Serializable {
+        public static class Answer implements Serializable {
             public UnitRect bounds;
             public boolean isCorrect;
             public Answer(UnitRect bounds, boolean isCorrect) {
@@ -70,8 +70,10 @@ public class TestFormat implements Serializable {
     public String Name;
     transient public BufferedImage BaseImage;
     public LinkedList<Question> questions = new LinkedList<>();
+    public boolean created;
 
     public TestFormat(BufferedImage baseImage,String name) {
+        created=true;
         BaseImage=baseImage;
         Name=name;
     }

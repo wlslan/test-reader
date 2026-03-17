@@ -1,5 +1,6 @@
 package Gui;
 
+import Images.Images;
 import Utils.Utils;
 
 import javax.swing.*;
@@ -39,7 +40,7 @@ public class ImageLabel extends JComponent {
     @Override
     public void invalidate() {
         if (image!=null) {
-            scaled = resizeImage(image, getSize());
+            scaled = Images.resizeImage(image, getSize());
         }
         super.invalidate();
     }

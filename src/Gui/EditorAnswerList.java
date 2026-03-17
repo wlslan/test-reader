@@ -1,9 +1,15 @@
 package Gui;
 
 import Data.TestFormat;
+import Utils.Utils;
 
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import static javax.swing.JOptionPane.OK_CANCEL_OPTION;
 
 public class EditorAnswerList extends JPanel {
     public ListModdable<TestFormat.Question.Answer> list;
@@ -17,8 +23,76 @@ public class EditorAnswerList extends JPanel {
 
     public EditorCanvas canvas;
 
+    private static class ModifyAnswerDialog {
+        public static JPanel jPanel;
+        public static JCheckBox isCorrect;
+        public static JButton rebound;
+        private static ActionListener actionListener;
+        private static Utils.UnitRect curRect;
+        static {
+            jPanel = new JPanel(new FlowLayout());
+            isCorrect = new JCheckBox("Pareiza");
+            rebound = new JButton("Mainīt formu");
+            jPanel.add(isCorrect);
+            jPanel.add(rebound);
+        }
+        public static void Open(MainFrame mainFrame, TestFormat.Question.Answer answer,ActionListener listener) {
+            isCorrect.setSelected(answer.isCorrect);
+            curRect = answer.bounds;
+            Reopen(mainFrame,answer,listener);
+        }
+        private static void Reopen (MainFrame mainFrame, TestFormat.Question.Answer answer,ActionListener listener) {
+            if (actionListener!=null) {
+                rebound.removeActionListener(actionListener);
+            }
+            JOptionPane optionPane = new JOptionPane(jPanel,
+                    OK_CANCEL_OPTION,
+                    JOptionPane.PLAIN_MESSAGE,
+                    null);
+            JDialog dialog = optionPane.createDialog(mainFrame,"Reģidēt "+answer);
+            dialog.getContentPane().add(optionPane);
+            rebound.addActionListener(actionListener= e -> {
+                dialog.dispose();
+                optionPane.setValue(JOptionPane.CLOSED_OPTION);
+                mainFrame.sceneEditor.canvas.CreateRect(result -> {
+                    curRect=result;
+                    Reopen(mainFrame,answer,listener);
+                });
+            });
+
+            dialog.validate();
+            dialog.setLocationRelativeTo(mainFrame);
+            dialog.setVisible(true);
+
+            Object response = optionPane.getValue();
+            int trueResponse;
+            if (response==null) {
+                trueResponse=JOptionPane.CLOSED_OPTION;
+            }
+            else {
+                if(response instanceof Integer) {
+                    trueResponse = ((Integer) response).intValue();
+                }
+                else {
+                    trueResponse = JOptionPane.CLOSED_OPTION;
+                }
+            }
+
+            if (trueResponse == JOptionPane.CLOSED_OPTION || trueResponse == JOptionPane.CANCEL_OPTION) {
+                return;
+            }
+
+            boolean value1 = isCorrect.isSelected();
+            Utils.UnitRect value2 = curRect;
+            answer.isCorrect=value1;
+            answer.bounds=value2;
+            listener.actionPerformed(null);
+
+        }
+    }
     public EditorAnswerList(SceneEditor scene) {
         canvas =scene.canvas;
+        setBorder(new TitledBorder("Atbildes"));
         setLayout(cardLayout = new CardLayout());
         list = new ListModdable<>() {
             @Override
@@ -30,25 +104,34 @@ public class EditorAnswerList extends JPanel {
                     TestFormat.Question.Answer answer = new TestFormat.Question.Answer(rect);
                     AddList(answer);
                     canvas.CreateAnswer(answer);
+                    scene.saved=false;
                 });
             }
 
             @Override
-            public void Modify(TestFormat.Question.Answer answer) {
-
-                canvas.ModifyAnswer(answer);
+            public void Modify(TestFormat.Question.Answer answer, int index) {
+                if (answer == null) {
+                    return;
+                }
+                ActionListener actionListener= _ -> {
+                    ModifyList(index);
+                    canvas.ModifyAnswer(answer);
+                    scene.saved=false;
+                };
+                ModifyAnswerDialog.Open(scene.mainFrame,answer,actionListener);
             }
 
             @Override
             public void Destroy(TestFormat.Question.Answer answer, int index) {
                 canvas.DestroyAnswer(answer);
                 RemoveList(index);
+                scene.saved=false;
             }
         };
         list.list.setCellRenderer(new DefaultListCellRenderer() {
             @Override
             public Component getListCellRendererComponent(final JList list, Object value, final int index, final boolean isSelected, final boolean cellHasFocus) {
-                value= String.format("%d. %s", index,value.toString());
+                value= String.format("%d. %s", index+1,value.toString());
                 return super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
             }
         });

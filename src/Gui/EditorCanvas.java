@@ -89,7 +89,7 @@ public class EditorCanvas extends JPanel {
         sizeX=size.width;
         sizeY=size.height;
         layeredPane.setPreferredSize(new Dimension(sizeX, sizeY));
-        BufferedImage image = Utils.resizeImage(testFormat.BaseImage, size);
+        BufferedImage image = Images.Images.resizeImage(testFormat.BaseImage, size);
         testImageLabel.setIcon(new ImageIcon(image));
     }
     public void CreateRect(DelayedCreator.Listener<Utils.UnitRect> listener) {
