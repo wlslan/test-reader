@@ -28,10 +28,10 @@ public class SavableArray {
                 ans.append('\n');
             }
             for (int j=0;j<m;j++) {
-                ans.append(a[i][j]);
                 if (j>0) {
                     ans.append(delim);
                 }
+                ans.append(a[i][j]);
             }
         }
         return ans.toString();

@@ -5,69 +5,38 @@ import Utils.Utils;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
-import java.util.HashMap;
-import java.util.Map;
 
 public class EditorCanvas extends JPanel {
     static final int baseSizeX=640,baseSizeY=640;
     public int sizeX, sizeY;
 
-    private SceneEditor scene;
-    private JPanel imagePanel;
-    private JLabel testImageLabel;
-    private ImageIcon testImage;
-    private AnswerRects answerRects;
-    private SelectRect selectRect;
+    private final SceneEditor scene;
+    private final JPanel imagePanel;
+    private final JLabel testImageLabel;
+    private final AnswerRects answerRects;
+    private final SelectRect selectRect;
 
     private class AnswerRects extends JComponent {
-        private class ColorRectangle {
-            public Color color;
-            public Rectangle rect;
-            public ColorRectangle(Color color, Rectangle rect) {
-                this.color=color;
-                this.rect=rect;
-            }
-        }
-        private Map<TestFormat.Question.Answer,ColorRectangle> rectangles = new HashMap<>();
+        public static final Color ColorCorrect=new Color(0x00FF00), ColorIncorrect=new Color(0xFF0000);
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
             TestFormat.Question question = scene.answerList.activeQuestion;
             if (question==null) {return;}
-            for (ColorRectangle cRect : rectangles.values()) {
-                g.setColor(cRect.color);
-                Rectangle r=cRect.rect;
-                g.drawRect(r.x,r.y,r.width,r.height);
-            }
-        }
-        public void DrawAnswer(TestFormat.Question.Answer answer) {
-            Rectangle rect=answer.bounds.ToFull(sizeX,sizeY);
-            Color color = answer.isCorrect ? new Color(0x00FF00) : new Color(0xFF0000);
-            rectangles.put(answer,new ColorRectangle(color,rect));
-            repaint();
-        }
-        public void UndrawAnswer(TestFormat.Question.Answer answer) {
-            Rectangle rect=answer.bounds.ToFull(sizeX,sizeY);
-            rectangles.remove(answer);
-            repaint();
-        }
-        public void RedrawAnswer(TestFormat.Question.Answer answer) {
-            UndrawAnswer(answer);
-            DrawAnswer(answer);
-        }
-        public void DrawQuestion(TestFormat.Question question) {
-            rectangles.clear();
-            repaint();
             for (TestFormat.Question.Answer answer:question.answerList) {
-                DrawAnswer(answer);
+                PaintAnswer(g,answer);
             }
         }
-    };
+        private void PaintAnswer(Graphics g,TestFormat.Question.Answer answer) {
+            Color color = answer.isCorrect ? ColorCorrect:ColorIncorrect;
+            Rectangle rect = answer.bounds.ToFull(sizeX,sizeY);
+            g.setColor(color);
+            g.drawRect(rect.x,rect.y,rect.width,rect.height);
+        }
+    }
 
-    private JLayeredPane layeredPane;
-    private MouseListener mouseListener;
+    private final JLayeredPane layeredPane;
     public EditorCanvas (SceneEditor scene){
         this.scene=scene;
         setBorder(BorderFactory.createLineBorder(new Color(0)));
@@ -75,11 +44,11 @@ public class EditorCanvas extends JPanel {
         layeredPane.setLayout(new FillLayout());
 
         imagePanel=new JPanel();
-        imagePanel.add(testImageLabel = new JLabel(testImage=new ImageIcon()));
+        imagePanel.add(testImageLabel = new JLabel());
 
-        layeredPane.add(imagePanel, new Integer(0));
-        layeredPane.add(answerRects= new AnswerRects(), new Integer(1));
-        layeredPane.add(selectRect= new SelectRect(), new Integer(2));
+        layeredPane.add(imagePanel, Integer.valueOf(0));
+        layeredPane.add(answerRects= new AnswerRects(), Integer.valueOf(1));
+        layeredPane.add(selectRect= new SelectRect(), Integer.valueOf(2));
 
         add(layeredPane);
     }
@@ -91,18 +60,13 @@ public class EditorCanvas extends JPanel {
         layeredPane.setPreferredSize(new Dimension(sizeX, sizeY));
         BufferedImage image = Images.Images.resizeImage(testFormat.BaseImage, size);
         testImageLabel.setIcon(new ImageIcon(image));
+        RefreshAnswerDisplay();
     }
     public void CreateRect(DelayedCreator.Listener<Utils.UnitRect> listener) {
         selectRect.AddListener(listener);
         selectRect.Create();
     }
-    public void CreateAnswer(TestFormat.Question.Answer answer) {
-        answerRects.DrawAnswer(answer);
-    }
-    public void ModifyAnswer(TestFormat.Question.Answer answer) {
-        answerRects.RedrawAnswer(answer);
-    }
-    public void DestroyAnswer(TestFormat.Question.Answer answer) {
-        answerRects.UndrawAnswer(answer);
+    public void RefreshAnswerDisplay() {
+        answerRects.repaint();
     }
 }

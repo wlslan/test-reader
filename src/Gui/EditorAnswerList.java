@@ -6,10 +6,8 @@ import Utils.Utils;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import static javax.swing.JOptionPane.OK_CANCEL_OPTION;
 
 public class EditorAnswerList extends JPanel {
     public ListModdable<TestFormat.Question.Answer> list;
@@ -45,10 +43,7 @@ public class EditorAnswerList extends JPanel {
             if (actionListener!=null) {
                 rebound.removeActionListener(actionListener);
             }
-            JOptionPane optionPane = new JOptionPane(jPanel,
-                    OK_CANCEL_OPTION,
-                    JOptionPane.PLAIN_MESSAGE,
-                    null);
+            JOptionPane optionPane = new JOptionPane(jPanel,JOptionPane.PLAIN_MESSAGE,JOptionPane.OK_CANCEL_OPTION,null);
             JDialog dialog = optionPane.createDialog(mainFrame,"Reģidēt "+answer);
             dialog.getContentPane().add(optionPane);
             rebound.addActionListener(actionListener= e -> {
@@ -71,7 +66,7 @@ public class EditorAnswerList extends JPanel {
             }
             else {
                 if(response instanceof Integer) {
-                    trueResponse = ((Integer) response).intValue();
+                    trueResponse = (Integer) response;
                 }
                 else {
                     trueResponse = JOptionPane.CLOSED_OPTION;
@@ -103,7 +98,7 @@ public class EditorAnswerList extends JPanel {
                     }
                     TestFormat.Question.Answer answer = new TestFormat.Question.Answer(rect);
                     AddList(answer);
-                    canvas.CreateAnswer(answer);
+                    canvas.RefreshAnswerDisplay();
                     scene.saved=false;
                 });
             }
@@ -115,7 +110,7 @@ public class EditorAnswerList extends JPanel {
                 }
                 ActionListener actionListener= _ -> {
                     ModifyList(index);
-                    canvas.ModifyAnswer(answer);
+                    canvas.RefreshAnswerDisplay();
                     scene.saved=false;
                 };
                 ModifyAnswerDialog.Open(scene.mainFrame,answer,actionListener);
@@ -123,7 +118,7 @@ public class EditorAnswerList extends JPanel {
 
             @Override
             public void Destroy(TestFormat.Question.Answer answer, int index) {
-                canvas.DestroyAnswer(answer);
+                canvas.RefreshAnswerDisplay();
                 RemoveList(index);
                 scene.saved=false;
             }

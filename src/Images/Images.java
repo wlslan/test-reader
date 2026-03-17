@@ -1,16 +1,20 @@
 package Images;
 
 import Data.TestFormat;
+import Gui.MainFrame;
 import Gui.SceneBase;
 import Utils.Utils;
+import com.sun.tools.javac.Main;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
 public class Images {
+    public final static int resolution=1;
     public static BufferedImage resizeImage(BufferedImage image, int targetWidth, int targetHeight) {
         if (image.getWidth()==targetWidth && image.getHeight()==targetHeight) {
             return image;
@@ -28,11 +32,16 @@ public class Images {
     public static boolean highlightedArea(BufferedImage image, Utils.UnitRect area) {
         Rectangle rect = area.ToFull(image.getWidth(), image.getHeight());
         BufferedImage sub = image.getSubimage(rect.x,rect.y,rect.width,rect.height);
-        BufferedImage goal = new BufferedImage(1,1,BufferedImage.OPAQUE);
+        BufferedImage goal = new BufferedImage(resolution,resolution,BufferedImage.OPAQUE);
         Graphics2D g2d=goal.createGraphics();
         g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-        g2d.drawImage(goal,0,0,1,1,null);
+        boolean boi = g2d.drawImage(sub,0,0,resolution,resolution,null);
+        if (!boi) {
+            JOptionPane.showMessageDialog(MainFrame.mainFrame,"Failed");
+        }
         g2d.dispose();
+        //Debug.Debug.ShowImage(sub);
+        //Debug.Debug.ShowImage(goal);
         int col=goal.getRGB(0,0);
         int blue = col & 0xff;
         int green = (col & 0xff00) >> 8;

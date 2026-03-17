@@ -13,7 +13,6 @@ void main() throws IOException, ClassNotFoundException {
                 UIManager.getSystemLookAndFeelClassName());
     } catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException |
              IllegalAccessException e) {
-        //
     }
     new MainFrame();
 }

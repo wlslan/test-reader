@@ -21,16 +21,7 @@ public class SaveDataHandler {
 
     public static void writeFile (SavableObject object) {
         File file = new File(GetSaveFilePath(object));
-        if (!file.exists()) {
-            if (file.getParentFile() != null) {
-                file.getParentFile().mkdirs();
-            }
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
+        completeFile(file);
         try {
             FileOutputStream fileOut = new FileOutputStream(file);
             ObjectOutputStream objOut = new ObjectOutputStream(fileOut);
@@ -57,6 +48,17 @@ public class SaveDataHandler {
     public static File writeCSV (SavableArray array) {
 
         File file = new File(GetSaveFilePath(array));
+        completeFile(file);
+        try {
+            FileWriter fileOut = new FileWriter(file);
+            fileOut.write(array.toString());
+            fileOut.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return file;
+    }
+    public static File completeFile(File file) {
         if (!file.exists()) {
             if (file.getParentFile() != null) {
                 file.getParentFile().mkdirs();
@@ -66,12 +68,6 @@ public class SaveDataHandler {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-        }
-        try {
-            FileWriter fileOut = new FileWriter(file);
-            fileOut.write(array.toString());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
         return file;
     }

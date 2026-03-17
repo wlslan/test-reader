@@ -73,7 +73,7 @@ public class EditorQuestionList extends JPanel {
         add(list);
         listSelectionListener= e -> {
             answerList.SetQuestion(list.GetSelectedValue());
-
+            scene.canvas.RefreshAnswerDisplay();
         };
         list.list.addListSelectionListener(listSelectionListener);
     }
