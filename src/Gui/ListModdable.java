@@ -31,6 +31,7 @@ public abstract class ListModdable<E> extends JPanel {
         }
         E value = model.get(index);
         model.set(index,value);
+        list.setSelectedIndex(index);
     }
     public void ClearList() {
         model.clear();

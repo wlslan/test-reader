@@ -1,5 +1,6 @@
 package Utils;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.Serializable;
@@ -111,5 +112,8 @@ public class Utils {
             height*=-1;
         }
         return new Rectangle(x,y,width,height);
+    }
+    public static boolean AcceptedDialog (int response) {
+        return response!=JOptionPane.CLOSED_OPTION && response!= JOptionPane.CANCEL_OPTION;
     }
 }

@@ -1,6 +1,7 @@
 package Gui;
 
 import Data.TestFormat;
+import Utils.Utils;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -19,26 +20,29 @@ public class DialogSelectFormat {
         jPanel.add(comboBox);
     }
     public static TestFormat Open(MainFrame mainFrame) {
-        int response = JOptionPane.showConfirmDialog(mainFrame, jPanel, "Izvēlieties pārbaudes darba formātu", OK_CANCEL_OPTION);
+        {
+            int response = JOptionPane.showConfirmDialog(mainFrame, jPanel, "Izvēlieties pārbaudes darba formātu", OK_CANCEL_OPTION);
 
-        if (response == JOptionPane.CLOSED_OPTION || response == JOptionPane.CANCEL_OPTION) {
-            return null;
+            if (!Utils.AcceptedDialog(response)) {
+                return null;
+            }
         }
-        Object value = comboBox.getSelectedItem();
+        Object value = comboBox.comboBox.getSelectedItem();
         if (!(value instanceof TestFormat)) {
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setMultiSelectionEnabled(false);
             fileChooser.setFileFilter(MainFrame.imageFilter);
-            response=fileChooser.showOpenDialog(mainFrame);
+            int response = fileChooser.showOpenDialog(mainFrame);
             if (response != JFileChooser.APPROVE_OPTION) {
                 return null;
             }
             try {
-                value = new TestFormat(ImageIO.read(fileChooser.getSelectedFile()),"placeholder");
+                value = new TestFormat(ImageIO.read(fileChooser.getSelectedFile()), null);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
+
         return (TestFormat)value;
     }
 }

@@ -34,6 +34,9 @@ public class ExternalListModel<E> extends DefaultListModel<E> {
 
             @Override
             public void contentsChanged(ListDataEvent e) {
+                if (IsUnsynced()) {
+                    return;
+                }
                 ResyncList();
             }
         });

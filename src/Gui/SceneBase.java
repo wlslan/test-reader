@@ -21,11 +21,11 @@ public final class SceneBase extends Scene {
     private class EditorButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent evt) {
-            Object currentFormat = DialogSelectFormat.Open(mainFrame);
+            TestFormat currentFormat = DialogSelectFormat.Open(mainFrame);
             if (currentFormat == null) {
                 return;
             }
-            mainFrame.sceneEditor.OpenFormat((TestFormat) currentFormat);
+            mainFrame.sceneEditor.OpenFormat(currentFormat);
             mainFrame.ChangeScene(mainFrame.sceneEditor);
         }
     }
@@ -59,7 +59,7 @@ public final class SceneBase extends Scene {
             if (response == JOptionPane.CLOSED_OPTION || response == JOptionPane.CANCEL_OPTION) {
                 return false;
             }
-            currentFormat = (TestFormat) comboBox.getSelectedItem();
+            currentFormat = (TestFormat) comboBox.comboBox.getSelectedItem();
             return true;
         }
     }
@@ -83,7 +83,7 @@ public final class SceneBase extends Scene {
         this.mainFrame = mainFrame;
         name=defaultName;
         setSize(getSize());
-        editorButton =new JButton("Izveidot pārbaudes darba formātu");
+        editorButton =new JButton("Rediģēt pārbaudes darba formātu");
         editorButton.addActionListener(new EditorButtonListener());
         readTestButton = new JButton("Pārbaudīt pārbaudes darbus");
         readTestButton.addActionListener(new ReadTestButtonListener());

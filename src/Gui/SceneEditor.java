@@ -2,6 +2,7 @@ package Gui;
 
 import Data.TestFormat;
 import SaveData.SaveDataHandler;
+import Utils.Utils;
 
 import javax.swing.*;
 import java.awt.image.BufferedImage;
@@ -31,6 +32,14 @@ public final class SceneEditor extends Scene {
         JMenuItem saveButton = new JMenuItem("Saglabāt");
         saveButton.addActionListener(e -> {
             if (currentFormat.created) {
+                JPanel panel = new JPanel();
+                JTextField field = new JTextField("",20 );
+                panel.add(field);
+                int response = JOptionPane.showConfirmDialog(mainFrame, panel, "Izvēlieties nosaukumu", OK_CANCEL_OPTION);
+                if (!Utils.AcceptedDialog(response)) {
+                    return;
+                }
+                currentFormat.Name=field.getText();
                 TestFormat.testFormats.add(currentFormat);
                 currentFormat.created=false;
             }
