@@ -2,14 +2,11 @@ package Gui;
 
 import Data.ExternalComboBoxModel;
 import Data.TestFormat;
+import SaveData.SaveDataHandler;
 import Utils.Utils;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.awt.image.BufferedImage;
-import java.util.LinkedList;
 
 import static Data.TestFormat.testFormats;
 import static javax.swing.JOptionPane.OK_CANCEL_OPTION;
@@ -37,7 +34,7 @@ public class ComboBoxFormat extends JPanel {
         });
         JButton deleteButton = new JButton("Dzēst");
         add(deleteButton);
-        deleteButton.addActionListener(e -> {
+        deleteButton.addActionListener(_ -> {
             int index=comboBox.getSelectedIndex();
             if (!comboBoxModel.DeletableIndex(index)) {
                 return;
@@ -47,10 +44,11 @@ public class ComboBoxFormat extends JPanel {
                 return;
             }
             comboBoxModel.removeElementAt(index);
+            SaveDataHandler.writeFile(TestFormat.testFormats);
         });
         boolean deletable = comboBoxModel.DeletableIndex( comboBox.getSelectedIndex());
         deleteButton.setEnabled(deletable);
-        comboBox.addItemListener(e -> {
+        comboBox.addItemListener(_ -> {
             boolean deletable1 = comboBoxModel.DeletableIndex( comboBox.getSelectedIndex());
             deleteButton.setEnabled(deletable1);
         });
