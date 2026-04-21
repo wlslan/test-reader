@@ -5,14 +5,22 @@ import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 import java.util.List;
 
-public class ExternalListModel<E> extends DefaultListModel<E> {
+public class ExternalComboBoxModel<E> extends DefaultComboBoxModel<E> {
     private List<E> synced;
     private boolean updating;
-
+    private int specialOptions;
+    private int syncedIndex(int index) {
+        return index-specialOptions;
+    }
     private boolean IsUnsynced() {
         return synced == null || updating;
     }
-    public ExternalListModel(List<E> list) {
+
+    public boolean DeletableIndex(int index) {
+        return index>=specialOptions;
+    }
+
+    public ExternalComboBoxModel(List<E> list) {
         addListDataListener(new ListDataListener() {
             @Override
             public void intervalAdded(ListDataEvent e) {
@@ -20,7 +28,7 @@ public class ExternalListModel<E> extends DefaultListModel<E> {
                     return;
                 }
                 for (int i = e.getIndex0(); i <= e.getIndex1(); i++) {
-                    synced.add(i, get(i));
+                    synced.add(syncedIndex(i), getElementAt(i));
                 }
             }
 
@@ -29,7 +37,7 @@ public class ExternalListModel<E> extends DefaultListModel<E> {
                 if (IsUnsynced()) {
                     return;
                 }
-                synced.subList(e.getIndex0(), e.getIndex1() + 1).clear();
+                synced.subList(syncedIndex(e.getIndex0()), syncedIndex(e.getIndex1() + 1)).clear();
             }
 
             @Override
@@ -37,7 +45,7 @@ public class ExternalListModel<E> extends DefaultListModel<E> {
                 if (IsUnsynced()) {
                     return;
                 }
-                throw new UnsupportedOperationException("contentsChanged in ExternalListModel");
+                TransferList();
             }
         });
         ChangeList(list);
@@ -48,16 +56,29 @@ public class ExternalListModel<E> extends DefaultListModel<E> {
             return;
         }
         updating =true;
-        clear();
+        specialOptions=0;
+        removeAllElements();
         for (E e : this.synced) {
             addElement(e);
         }
         updating =false;
     }
-    public void ResyncList() {
-        ChangeList(synced);
+    public void TransferList() {
+        if (synced==null) {
+            return;
+        }
+        synced.clear();
+        for (int i=specialOptions;i<getSize();i++) {
+            synced.add(getElementAt(i));
+        }
     }
     public List<E> GetList() {
         return synced;
+    }
+    public void AddSpecial(E item) {
+        updating=true;
+        specialOptions++;
+        insertElementAt(item,0);
+        updating=false;
     }
 }

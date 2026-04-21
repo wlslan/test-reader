@@ -1,5 +1,6 @@
 package Gui;
 
+import Data.ExternalComboBoxModel;
 import Data.TestFormat;
 import Utils.Utils;
 
@@ -15,56 +16,43 @@ import static javax.swing.JOptionPane.OK_CANCEL_OPTION;
 
 public class ComboBoxFormat extends JPanel {
     JPanel BoxPanel;
-    JComboBox<Object> comboBox;
+    JComboBox<TestFormat> comboBox;
     boolean AllowCreate;
+    ExternalComboBoxModel<TestFormat> comboBoxModel;
     public ComboBoxFormat(boolean allowCreate) {
         AllowCreate=allowCreate;
         BoxPanel=new JPanel();
         add(BoxPanel);
-        LinkedList<Object> testFormatsCopy= new LinkedList<>();
-        testFormats.forEach(testFormatsCopy::addLast);
+        comboBox=new JComboBox<>(comboBoxModel= new ExternalComboBoxModel<>(testFormats));
         if (allowCreate) {
-            testFormatsCopy.addFirst(new Object());
+            comboBoxModel.AddSpecial(null);
         }
-        comboBox=new JComboBox<>(testFormatsCopy.toArray());
         add(comboBox);
         comboBox.setRenderer(new DefaultListCellRenderer() {
             @Override
             public Component getListCellRendererComponent(final JList list, Object value, final int index, final boolean isSelected, final boolean cellHasFocus) {
-                value = (value instanceof TestFormat) ? ((TestFormat) value).Name : "Izveidot jaunu...";
+                value = (value == null) ? "Izveidot jaunu..." : ((TestFormat) value).Name; //i wish i was in C# right now
                 return super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
             }
         });
         JButton deleteButton = new JButton("Dzēst");
         add(deleteButton);
         deleteButton.addActionListener(e -> {
-            Object value = comboBox.getSelectedItem();
-            if (!(value instanceof TestFormat)) {
+            int index=comboBox.getSelectedIndex();
+            if (!comboBoxModel.DeletableIndex(index)) {
                 return;
             }
             int response = JOptionPane.showConfirmDialog(MainFrame.mainFrame,"Tiešām izdzēst?","Izdzēst formātu",OK_CANCEL_OPTION);
             if (!Utils.AcceptedDialog(response)) {
                 return;
             }
-            Data.TestFormat.testFormats.remove((TestFormat) value);
-            resyncComboBox();
+            comboBoxModel.removeElementAt(index);
         });
-        boolean deletable = comboBox.getSelectedItem() instanceof TestFormat;
+        boolean deletable = comboBoxModel.DeletableIndex( comboBox.getSelectedIndex());
         deleteButton.setEnabled(deletable);
         comboBox.addItemListener(e -> {
-            boolean deletable1 = comboBox.getSelectedItem() instanceof TestFormat;
+            boolean deletable1 = comboBoxModel.DeletableIndex( comboBox.getSelectedIndex());
             deleteButton.setEnabled(deletable1);
         });
-    }
-    private JComboBox<Object> resyncComboBox() {
-        BoxPanel.remove(comboBox);
-        LinkedList<Object> testFormatsCopy= new LinkedList<>();
-        testFormats.forEach(testFormatsCopy::addLast);
-        if (AllowCreate) {
-            testFormatsCopy.addFirst(new Object());
-        }
-        comboBox=new JComboBox<>(testFormatsCopy.toArray());
-        BoxPanel.add(comboBox);
-        return comboBox;
     }
 }

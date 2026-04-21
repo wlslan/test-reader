@@ -1,4 +1,4 @@
-package Gui;
+package Data;
 
 import java.util.ArrayList;
 import java.util.EventListener;
@@ -11,10 +11,10 @@ public abstract class DelayedCreator<T>{
     public abstract T Result();
 
     List<Listener<T>> listeners = new ArrayList<>();
-    void addListener(Listener<T> listener) {
+    public void addListener(Listener<T> listener) {
         listeners.add(listener);
     }
-    void fireEvent() {
+    public void fireEvent() {
         T result = Result();
         for (Listener<T> listener : listeners) {
             listener.objectCreated(result);
