@@ -30,13 +30,13 @@ public class SaveDataHandler {
             throw new RuntimeException(e);
         }
     }
-    public static SavableObject readFile (SavableObject object) throws IOException, ClassNotFoundException {
+    public static SavableObject readFile (SavableObject object) throws ClassNotFoundException {
         File file = new File(GetSaveFilePath(object));
         try {
             FileInputStream fileIn = new FileInputStream(file);
             ObjectInputStream objIn = new ObjectInputStream(fileIn);
             return (SavableObject) objIn.readObject();
-        } catch (FileNotFoundException | InvalidClassException e) {
+        } catch (IOException e) {
             writeFile(object);
             return object;
         }
