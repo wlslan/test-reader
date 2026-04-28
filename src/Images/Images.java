@@ -15,6 +15,9 @@ import java.io.IOException;
 
 public class Images {
     public final static int resolution=1;
+    public static Dimension getSize(BufferedImage image) {
+        return new Dimension(image.getWidth(),image.getHeight());
+    }
     public static BufferedImage resizeImage(BufferedImage image, int targetWidth, int targetHeight) {
         if (image.getWidth()==targetWidth && image.getHeight()==targetHeight) {
             return image;

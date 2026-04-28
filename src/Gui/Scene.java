@@ -9,4 +9,7 @@ public class Scene extends JPanel {
     Scene() {
         super();
     }
+    Scene(LayoutManager layout) {
+        super(layout);
+    }
 }

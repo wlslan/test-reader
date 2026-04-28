@@ -21,6 +21,7 @@ public class DialogSelectFormat {
     }
     public static TestFormat Open(MainFrame mainFrame) {
         {
+            comboBox.comboBoxModel.ResyncList();
             int response = JOptionPane.showConfirmDialog(mainFrame, jPanel, "Izvēlieties pārbaudes darba formātu", OK_CANCEL_OPTION);
 
             if (!Utils.AcceptedDialog(response)) {

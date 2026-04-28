@@ -5,6 +5,7 @@ import SaveData.SaveDataHandler;
 import Utils.Utils;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 import static javax.swing.JOptionPane.OK_CANCEL_OPTION;
@@ -21,8 +22,11 @@ public final class SceneEditor extends Scene {
     public MainFrame mainFrame;
     public JMenu menu;
 
+   private BorderLayout layout;
+   private JPanel eastArea;
+
     SceneEditor(MainFrame mainFrame) {
-        super();
+        super(layout=new BorderLayout());
         this.mainFrame=mainFrame;
         name=defaultName;
         this.mainFrame = mainFrame;
@@ -60,9 +64,10 @@ public final class SceneEditor extends Scene {
             }
         });
         menu.add(closeButton);
-        add(canvas = new EditorCanvas(this));
-        add(answerList = new EditorAnswerList(this));
-        add(questionList = new EditorQuestionList(this));
+        add(canvas = new EditorCanvas(this),BorderLayout.CENTER);
+        add(eastArea=new JPanel(new BoxLayout(this,BoxLayout.X_AXIS)),BorderLayout.EAST);
+        eastArea.add(answerList = new EditorAnswerList(this));
+        eastArea.add(questionList = new EditorQuestionList(this));
     }
     public void OpenFormat(TestFormat testFormat) {
         menu.setEnabled(true);

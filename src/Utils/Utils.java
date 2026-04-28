@@ -8,6 +8,26 @@ import java.io.Serializable;
 import static java.lang.Math.*;
 
 public class Utils {
+    public enum Center {
+        UPLEFT,
+        CENTER
+    }
+    public static Rectangle CenterRect(Dimension space,Rectangle rect, Center center) {
+        switch (center) {
+            case CENTER -> {
+                rect.x=(space.width-rect.width)/2;
+                rect.y=(space.height-rect.height)/2;
+            }
+            case UPLEFT -> {
+                throw new UnsupportedOperationException("Upleft centering not supported");
+            }
+        }
+        return rect;
+    }
+    public static Rectangle CenterRect(Dimension space, Dimension size, Center center) {
+        Rectangle rect = new Rectangle(size);
+        return CenterRect(space,rect,center);
+    }
     public enum Fit {
         FIT, //aspect, no more
         COVER, //aspect, no less

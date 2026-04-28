@@ -54,6 +54,7 @@ public final class SceneBase extends Scene {
             jPanel.add(selectFiles);
         }
         public static boolean Open(MainFrame mainFrame) {
+            comboBox.comboBoxModel.ResyncList();
             int response = JOptionPane.showConfirmDialog(mainFrame, jPanel, "Izvēlieties pārbaudes darba formātu un attēlus", OK_CANCEL_OPTION);
 
             if (response == JOptionPane.CLOSED_OPTION || response == JOptionPane.CANCEL_OPTION) {
