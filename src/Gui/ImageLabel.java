@@ -5,42 +5,59 @@ import Utils.Utils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.image.BufferedImage;
 
-import static Utils.Utils.*;
-
 public class ImageLabel extends JComponent {
-    private BufferedImage image;
     private Image scaled;
-    private ImageIcon imageIcon;
-    private BufferedImage trueImage;
+    private BufferedImage image;
+    private Utils.Fit fit;
+    private Utils.Center center;
+    private Rectangle area;
     public ImageLabel() {
+        addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                super.componentResized(e);
+                invalidate();
+                System.out.println("invalid");
+            }
+        });
+        System.out.println("lol");
     }
-    public ImageLabel(BufferedImage image) {
+    public ImageLabel(Utils.Fit fit, Utils.Center center, BufferedImage image) {
         this();
+        this.fit=fit;
+        this.center=center;
         SetImage(image);
     }
     public void SetImage(BufferedImage image) {
-        imageIcon.setImage(this.image=image);
+        this.image =image;
         setVisible(image!=null);
         invalidate();
     }
-    @Override
-    public Dimension getPreferredSize() {
-        return image == null ? super.getPreferredSize() : new Dimension(image.getWidth(this), image.getHeight(this));
-    }
+
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         if (image==null) {
             return;
         }
-        g.drawImage(scaled,0,0,this);
+        g.drawImage(scaled,area.x,area.y,this);
     }
     @Override
     public void invalidate() {
         if (image!=null) {
-            scaled = Images.resizeImage(image, getSize());
+            area=Utils.CenterRect(Utils.FitDimension(Images.getSize(image),getSize(),fit),getSize(), Utils.Center.CENTER);
+            if (area.getWidth()==0 || area.getHeight()==0) {
+                scaled=null;
+            }
+            else {
+                scaled = Images.resizeImage(image, area.getSize());
+            }
         }
         super.invalidate();
     }

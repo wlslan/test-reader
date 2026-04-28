@@ -9,12 +9,10 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class EditorCanvas extends JPanel {
-    static final int baseSizeX=640,baseSizeY=640;
     public int sizeX, sizeY;
 
     private final SceneEditor scene;
-    private final JPanel imagePanel;
-    private final JLabel testImageLabel;
+    private final ImageLabel imagePanel;
     private final AnswerRects answerRects;
     private final SelectRect selectRect;
 
@@ -39,13 +37,13 @@ public class EditorCanvas extends JPanel {
 
     private final JLayeredPane layeredPane;
     public EditorCanvas (SceneEditor scene){
+        super();
         this.scene=scene;
-        setBorder(BorderFactory.createLineBorder(new Color(0)));
+        setBorder(BorderFactory.createLineBorder(new Color(0x000000)));
         layeredPane=new JLayeredPane();
         layeredPane.setLayout(new FillLayout());
-
-        imagePanel=new JPanel();
-        imagePanel.add(testImageLabel = new JLabel());
+        layeredPane.setBorder(BorderFactory.createLineBorder(new Color(0xDA0000)));
+        imagePanel=new ImageLabel(Utils.Fit.FIT, Utils.Center.CENTER,null);
 
         layeredPane.add(imagePanel, Integer.valueOf(0));
         layeredPane.add(answerRects= new AnswerRects(), Integer.valueOf(1));
@@ -54,13 +52,8 @@ public class EditorCanvas extends JPanel {
         add(layeredPane);
     }
     public void SetFormat(TestFormat testFormat) {
-        Dimension size=new Dimension(testFormat.BaseImage.getWidth(),testFormat.BaseImage.getHeight());
-        Utils.FitDimension(size,baseSizeX,baseSizeY, Utils.Fit.FIT);
-        sizeX=size.width;
-        sizeY=size.height;
-        layeredPane.setPreferredSize(new Dimension(sizeX, sizeY));
-        BufferedImage image = Images.Images.resizeImage(testFormat.BaseImage, size);
-        testImageLabel.setIcon(new ImageIcon(image));
+        //layeredPane.setPreferredSize(new Dimension(sizeX, sizeY));
+        imagePanel.SetImage(testFormat.BaseImage);
         RefreshAnswerDisplay();
     }
     public void CreateRect(DelayedCreator.Listener<Utils.UnitRect> listener) {

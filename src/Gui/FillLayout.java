@@ -1,6 +1,7 @@
 package Gui;
 
 import Utils.Utils;
+import org.w3c.dom.css.Rect;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,20 +26,20 @@ public class FillLayout implements java.awt.LayoutManager {
     }
 
     @Override
-    public Dimension preferredLayoutSize(Container parent) {
-        synchronized (parent.getTreeLock()) {
-            Dimension dim = new Dimension(0, 0);
-            int nmembers = parent.getComponentCount();
+    public Dimension preferredLayoutSize(Container container) {
+        synchronized (container.getTreeLock()) {
+            Dimension dim = new Dimension(0,0);
+            int nmembers = container.getComponentCount();
 
             for (int i = 0 ; i < nmembers ; i++) {
-                Component m = parent.getComponent(i);
+                Component m = container.getComponent(i);
                 if (m.isVisible()) {
                     Dimension d = m.getPreferredSize();
                     dim.height = Math.max(dim.height, d.height);
                     dim.width = Math.max(dim.width, d.width);
                 }
             }
-            Insets insets = parent.getInsets();
+            Insets insets = container.getInsets();
             dim.width += insets.left + insets.right;
             dim.height += insets.top + insets.bottom;
             return dim;
@@ -70,20 +71,14 @@ public class FillLayout implements java.awt.LayoutManager {
     public void layoutContainer(Container parent) {
         synchronized (parent.getTreeLock()) {
             Insets insets = parent.getInsets();
+            Rectangle rect=new Rectangle(insets.left,insets.top,insets.right - insets.left, insets.bottom - insets.top) ;
             int nmembers = parent.getComponentCount();
-            Dimension dim=parent.getPreferredSize();
-            Point pos = new Point(insets.left, insets.top);
             for (int i = 0 ; i < nmembers ; i++) {
                 Component m = parent.getComponent(i);
                 if (m.isVisible()) {
                     Dimension target=m.getPreferredSize();
-                    Utils.FitDimension(target,dim,fit);
-                    m.setSize(target);
-                    Point targetPos=new Point(pos);
-                    targetPos.x+=(dim.width-target.width)/2;
-                    targetPos.y+=(dim.height-target.height)/2;
-                    m.setLocation(targetPos);
-
+                    Rectangle bounds=Utils.CenterFillRect(rect.getSize(),target,Utils.Center.CENTER,fit);
+                    m.setBounds(bounds);
                 }
             }
         }

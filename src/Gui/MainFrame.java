@@ -35,6 +35,7 @@ public class MainFrame extends JFrame {
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1100,600);
+        setMinimumSize(new Dimension(600,400));
         //setExtendedState(getExtendedState() | MAXIMIZED_BOTH);
         setTitle(programName);
     }

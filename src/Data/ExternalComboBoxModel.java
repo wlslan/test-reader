@@ -52,16 +52,19 @@ public class ExternalComboBoxModel<E> extends DefaultComboBoxModel<E> {
     }
     public void ChangeList(List<E> synced) {
         this.synced=synced;
-        if (synced==null) {
-            return;
-        }
         updating =true;
-        specialOptions=0;
-        removeAllElements();
-        for (E e : this.synced) {
-            addElement(e);
+        while (getSize()>specialOptions) {
+            removeElementAt(getSize()-1);
         }
-        updating =false;
+        if (synced!=null) {
+            for (E e : this.synced) {
+                addElement(e);
+            }
+        }
+        updating=false;
+    }
+    public void ResyncList() {
+        ChangeList(synced);
     }
     public void TransferList() {
         if (synced==null) {

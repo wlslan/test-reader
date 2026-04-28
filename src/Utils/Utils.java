@@ -8,12 +8,40 @@ import java.io.Serializable;
 import static java.lang.Math.*;
 
 public class Utils {
+    public enum Center {
+        UPLEFT,
+        CENTER
+    }
     public enum Fit {
         FIT, //aspect, no more
         COVER, //aspect, no less
         FILL //no aspect, exact
     }
+    public static Rectangle CenterFillRect(Dimension space,Dimension rect,Center center,Fit fit) {
+        Rectangle ans=new Rectangle(FitDimension(rect,space,fit));
+        return CenterRect(space,ans,center);
+    }
+    public static Rectangle CenterRect(Dimension space,Rectangle rect, Center center) {
+        switch (center) {
+            case CENTER -> {
+                rect.x=(space.width-rect.width)/2;
+                rect.y=(space.height-rect.height)/2;
+            }
+            case UPLEFT -> {
+                throw new UnsupportedOperationException("Upleft centering not supported");
+            }
+        }
+        return rect;
+    }
+    public static Rectangle CenterRect(Dimension space, Dimension size, Center center) {
+        Rectangle rect = new Rectangle(size);
+        return CenterRect(space,rect,center);
+    }
     public static Dimension FitDimension(Dimension dim,int targetWidth,int targetHeight, Fit fit) {
+        if (dim.width==0 || dim.height==0 ) {
+            dim.setSize(targetWidth,targetHeight);
+            return dim;
+        }
         switch (fit) {
             case FIT -> {
                 if ((targetWidth==dim.width && targetHeight>=dim.height) || (targetWidth>=dim.width && targetHeight==dim.height)) {
