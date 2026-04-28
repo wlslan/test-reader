@@ -2,7 +2,7 @@
 ## Darba autors
 Ilgvars Ročāns
 
-### !!! Testēšanas instrukcija redzama failā `docs/instructions.md`
+### !!! Integrāciju testi atrodas failā `src/Tests/Main.java`, akcepttesti - `docs/testesanas_parskats.pdf`
 ## Projekta apraksts
 Programmas mērķis ir ļaut skolotājiem nobildēt vai ieskenēt savu skolēnu rakstītos pārbaudes darbus, bildi ievadīt programmā un automātiski salīdzināt viņu atbildes ar pareizajām. Tāpēc tā skaitas datorredzes programma – tāda, kas nosaka kādi priekšmeti ir redzami attēlos. Es līdz idejai nonācu, iedvesmojoties no skolotāja dotajām programmas idejām. Man interesēja šī ideja, jo tā, manuprāt, varētu būt diezgan noderīga un viegli izveidojama. Turklāt, šī programma ir īpaša ar to, ka, kaut vai tā ir datorredzes programma, tā ir pietiekami vienkārša, lai to varētu izpildīt manuāli rakstot algoritmu objekta atpazīšanai, neizmantojot mašīnmācīšanos kā daudzas citas datorredzes programmas.
 
