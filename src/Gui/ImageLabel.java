@@ -9,6 +9,7 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.image.BufferedImage;
+import java.sql.SQLOutput;
 
 public class ImageLabel extends JComponent {
     private Image scaled;
@@ -51,7 +52,8 @@ public class ImageLabel extends JComponent {
     @Override
     public void invalidate() {
         if (image!=null) {
-            area=Utils.CenterRect(Utils.FitDimension(Images.getSize(image),getSize(),fit),getSize(), Utils.Center.CENTER);
+            area=new Rectangle(Images.getSize(image));
+            area=Utils.CenterFillRect(getBounds(), area,center, fit);
             if (area.getWidth()==0 || area.getHeight()==0) {
                 scaled=null;
             }

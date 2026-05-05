@@ -17,54 +17,51 @@ public class Utils {
         COVER, //aspect, no less
         FILL //no aspect, exact
     }
-    public static Rectangle CenterFillRect(Dimension space,Dimension rect,Center center,Fit fit) {
-        Rectangle ans=new Rectangle(FitDimension(rect,space,fit));
+    public static Rectangle CenterFillRect(Rectangle space,Rectangle rect,Center center,Fit fit) {
+
+        Rectangle ans=new Rectangle(FitDimension(rect.getSize(),space.getSize(),fit));
         return CenterRect(space,ans,center);
     }
-    public static Rectangle CenterRect(Dimension space,Rectangle rect, Center center) {
+    public static Rectangle CenterRect(Rectangle space,Rectangle rect, Center center) {
         switch (center) {
             case CENTER -> {
                 rect.x=(space.width-rect.width)/2;
                 rect.y=(space.height-rect.height)/2;
             }
             case UPLEFT -> {
-                throw new UnsupportedOperationException("Upleft centering not supported");
+                rect.x=0;
+                rect.y=0;
             }
         }
+        rect.x+=space.x;
+        rect.y+=space.y;
         return rect;
     }
-    public static Rectangle CenterRect(Dimension space, Dimension size, Center center) {
-        Rectangle rect = new Rectangle(size);
-        return CenterRect(space,rect,center);
-    }
-    public static Dimension FitDimension(Dimension dim,int targetWidth,int targetHeight, Fit fit) {
+    public static Dimension FitDimension(Dimension dim, Dimension target, Fit fit) {
         if (dim.width==0 || dim.height==0 ) {
-            dim.setSize(targetWidth,targetHeight);
+            dim.setSize(target.width,target.height);
             return dim;
         }
         switch (fit) {
             case FIT -> {
-                if ((targetWidth==dim.width && targetHeight>=dim.height) || (targetWidth>=dim.width && targetHeight==dim.height)) {
+                if ((target.width==dim.width && target.height>=dim.height) || (target.width>=dim.width && target.height==dim.height)) {
                     break;
                 }
-                double scaleFactor=min((double)targetWidth /dim.width, (double)targetHeight /dim.height);
+                double scaleFactor=min((double)target.width /dim.width, (double)target.height /dim.height);
                 dim.setSize(dim.getWidth()*scaleFactor,dim.getHeight()*scaleFactor);
             }
             case COVER -> {
-                if ((targetWidth==dim.width && targetHeight<=dim.height) || (targetWidth<=dim.width && targetHeight==dim.height)) {
+                if ((target.width==dim.width && target.height<=dim.height) || (target.width<=dim.width && target.height==dim.height)) {
                     break;
                 }
-                double scaleFactor=max((double)targetWidth /dim.width, (double)targetHeight /dim.height);
+                double scaleFactor=max((double)target.width /dim.width, (double)target.height /dim.height);
                 dim.setSize(dim.getWidth()*scaleFactor,dim.getHeight()*scaleFactor);
             }
             case FILL -> {
-                dim.setSize(targetWidth,targetHeight);
+                dim.setSize(target.width,target.height);
             }
         }
         return dim;
-    }
-    public static Dimension FitDimension(Dimension dim, Dimension target,Fit fit) {
-        return FitDimension(dim,target.width, target.height, fit);
     }
 
 

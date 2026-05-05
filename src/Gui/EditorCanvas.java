@@ -37,7 +37,7 @@ public class EditorCanvas extends JPanel {
 
     private final JLayeredPane layeredPane;
     public EditorCanvas (SceneEditor scene){
-        super();
+        super(new BorderLayout());
         this.scene=scene;
         setBorder(BorderFactory.createLineBorder(new Color(0x000000)));
         layeredPane=new JLayeredPane();
@@ -49,10 +49,10 @@ public class EditorCanvas extends JPanel {
         layeredPane.add(answerRects= new AnswerRects(), Integer.valueOf(1));
         layeredPane.add(selectRect= new SelectRect(), Integer.valueOf(2));
 
-        add(layeredPane);
+        add(layeredPane,BorderLayout.CENTER);
     }
     public void SetFormat(TestFormat testFormat) {
-        //layeredPane.setPreferredSize(new Dimension(sizeX, sizeY));
+        //layeredPane.setPreferredSize(new Dimension(640, 640));
         imagePanel.SetImage(testFormat.BaseImage);
         RefreshAnswerDisplay();
     }

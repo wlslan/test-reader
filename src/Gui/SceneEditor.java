@@ -22,14 +22,12 @@ public final class SceneEditor extends Scene {
     public MainFrame mainFrame;
     public JMenu menu;
 
-   private BorderLayout layout;
    private JPanel eastArea;
 
     SceneEditor(MainFrame mainFrame) {
-        super(layout=new BorderLayout());
+        super(new BorderLayout());
         this.mainFrame=mainFrame;
         name=defaultName;
-        this.mainFrame = mainFrame;
         menu = new JMenu("Fails");
         mainFrame.menuBar.add(menu);
         menu.setEnabled(false);

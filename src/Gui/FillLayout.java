@@ -71,13 +71,18 @@ public class FillLayout implements java.awt.LayoutManager {
     public void layoutContainer(Container parent) {
         synchronized (parent.getTreeLock()) {
             Insets insets = parent.getInsets();
-            Rectangle rect=new Rectangle(insets.left,insets.top,insets.right - insets.left, insets.bottom - insets.top) ;
+
+            int top = insets.top;
+            int bottom = parent.getHeight() - insets.bottom;
+            int left = insets.left;
+            int right = parent.getWidth() - insets.right;
+            Rectangle rect=new Rectangle(left,top,right - left, bottom - top) ;
             int nmembers = parent.getComponentCount();
             for (int i = 0 ; i < nmembers ; i++) {
                 Component m = parent.getComponent(i);
                 if (m.isVisible()) {
-                    Dimension target=m.getPreferredSize();
-                    Rectangle bounds=Utils.CenterFillRect(rect.getSize(),target,Utils.Center.CENTER,fit);
+                    Rectangle bounds=new Rectangle(left, top, right - left, bottom - top);
+                    bounds=Utils.CenterFillRect(rect,bounds,Utils.Center.CENTER,fit);
                     m.setBounds(bounds);
                 }
             }

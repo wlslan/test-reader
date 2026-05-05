@@ -37,7 +37,7 @@ public class Images {
         BufferedImage sub = image.getSubimage(rect.x,rect.y,rect.width,rect.height);
         BufferedImage goal = new BufferedImage(resolution,resolution,BufferedImage.OPAQUE);
         Graphics2D g2d=goal.createGraphics();
-        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
         boolean boi = g2d.drawImage(sub,0,0,resolution,resolution,null);
         if (!boi) {
             JOptionPane.showMessageDialog(MainFrame.mainFrame,"Failed");
