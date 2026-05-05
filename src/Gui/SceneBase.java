@@ -54,6 +54,7 @@ public final class SceneBase extends Scene {
             jPanel.add(selectFiles);
         }
         public static boolean Open(MainFrame mainFrame) {
+            selectedFiles=new File[0];
             int response = JOptionPane.showConfirmDialog(mainFrame, jPanel, "Izvēlieties pārbaudes darba formātu un attēlus", OK_CANCEL_OPTION);
 
             if (response == JOptionPane.CLOSED_OPTION || response == JOptionPane.CANCEL_OPTION) {
@@ -70,6 +71,10 @@ public final class SceneBase extends Scene {
                 return;
             }
             File results = SaveDataHandler.writeCSV(new SavableArray(ReadTests(DialogReadTest.selectedFiles,DialogReadTest.currentFormat)));
+            if (results==null) {
+                JOptionPane.showMessageDialog(mainFrame,"Aizver failu \"results.csv\" pirms rezultātu pārbaudīšanas!","Failu piekļuves kļūda", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
             try {
                 Desktop.getDesktop().open(results);
             } catch (IOException e) {

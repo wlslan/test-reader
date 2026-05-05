@@ -7,7 +7,7 @@ import java.io.*;
 
 public class SavableArray {
     static final String defaultName="results.csv";
-    static final char defaultDelim =  ',';
+    static final char defaultDelim =  ';';
 
     Object[][] a;
     String name=defaultName;
