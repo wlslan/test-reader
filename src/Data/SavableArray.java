@@ -21,6 +21,7 @@ public class SavableArray {
     @Override
     public String toString () {
         StringBuilder ans = new StringBuilder();
+        ans.append("sep=").append(delim).append('\n');
         int n=a.length;
         for (int i=0;i<n;i++) {
             int m =a[i].length;

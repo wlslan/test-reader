@@ -1,12 +1,12 @@
-import module java.base;
 import Data.TestFormat;
 import Gui.MainFrame;
 import SaveData.SaveDataHandler;
 
 import javax.swing.*;
+import java.io.IOException;
 
 public class Main {
-    void main(String[] args) throws IOException, ClassNotFoundException {
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
 
         TestFormat.testFormats = (TestFormat.TestFormats) SaveDataHandler.readFile(TestFormat.testFormats);
         try {
