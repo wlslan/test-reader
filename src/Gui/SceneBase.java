@@ -50,6 +50,7 @@ public final class SceneBase extends Scene {
                 }
                 selectedFiles= fileChooser.getSelectedFiles();
 
+
             });
             jPanel.add(selectFiles);
         }
@@ -71,11 +72,16 @@ public final class SceneBase extends Scene {
             if (!DialogReadTest.Open(mainFrame)) {
                 return;
             }
+            if (DialogReadTest.selectedFiles.length==0) {
+                JOptionPane.showMessageDialog(MainFrame.mainFrame,"Neviens skolēna pārbaudes darbs netika atlasīts lasīšanai.","Nav izvēlētu failu", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
             File results = SaveDataHandler.writeCSV(new SavableArray(ReadTests(DialogReadTest.selectedFiles,DialogReadTest.currentFormat)));
             if (results==null) {
                 JOptionPane.showMessageDialog(mainFrame,"Aizver failu \"results.csv\" pirms rezultātu pārbaudīšanas!","Failu piekļuves kļūda", JOptionPane.ERROR_MESSAGE);
                 return;
             }
+
             try {
                 Desktop.getDesktop().open(results);
             } catch (IOException e) {
