@@ -1,7 +1,9 @@
 package SaveData;
 
 import Data.SavableArray;
+import Gui.MainFrame;
 
+import javax.swing.*;
 import java.io.*;
 
 public class SaveDataHandler {
@@ -54,7 +56,7 @@ public class SaveDataHandler {
             fileOut.write(array.toString());
             fileOut.close();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            return null;
         }
         return file;
     }

@@ -23,10 +23,8 @@ public class ImageLabel extends JComponent {
             public void componentResized(ComponentEvent e) {
                 super.componentResized(e);
                 invalidate();
-                System.out.println("invalid");
             }
         });
-        System.out.println("lol");
     }
     public ImageLabel(Utils.Fit fit, Utils.Center center, BufferedImage image) {
         this();

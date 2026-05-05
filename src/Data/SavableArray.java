@@ -7,7 +7,7 @@ import java.io.*;
 
 public class SavableArray {
     static final String defaultName="results.csv";
-    static final char defaultDelim =  ',';
+    static final char defaultDelim =  ';';
 
     Object[][] a;
     String name=defaultName;
@@ -21,6 +21,7 @@ public class SavableArray {
     @Override
     public String toString () {
         StringBuilder ans = new StringBuilder();
+        ans.append("sep=").append(delim).append('\n');
         int n=a.length;
         for (int i=0;i<n;i++) {
             int m =a[i].length;

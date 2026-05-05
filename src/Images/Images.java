@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class Images {
+    public final static double HIGHLIGHT_SENSITIVITY = 2.0/3;
     public final static int resolution=1;
     public static Dimension getSize(BufferedImage image) {
         return new Dimension(image.getWidth(),image.getHeight());
@@ -50,7 +51,7 @@ public class Images {
         int green = (col & 0xff00) >> 8;
         int red = (col & 0xff0000) >> 16;
         double score = ((double)(red+green+blue)/3)/255;
-        return score <= 0.5;
+        return score <= HIGHLIGHT_SENSITIVITY;
     }
     public static Object[][] ReadTests(File[] files, TestFormat testFormat) {
         int n = files.length+1, m=testFormat.questions.size()+1;
@@ -74,17 +75,13 @@ public class Images {
             results[i][m]=0;
             results[i][0]=file.getName();
             for (TestFormat.Question question : testFormat.questions) {
-                boolean correct=true,correctFound=false;
+                boolean correct=true;
                 for (TestFormat.Question.Answer answer : question.answerList) {
                     boolean currentMarked =highlightedArea(current,answer.bounds);
-                    if (currentMarked) {
-                        if (correctFound) {
+                    if (currentMarked!=answer.isCorrect) {
                             correct=false;
                             break;
-                        }
-                        correctFound=true;
                     }
-                    correct &= (currentMarked == answer.isCorrect);
                 }
                 results[i][j]=correct ? 1 : 0;
                 results[i][m] = (Integer)results[i][m] +(Integer)results[i][j];

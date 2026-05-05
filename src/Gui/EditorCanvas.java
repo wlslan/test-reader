@@ -42,7 +42,6 @@ public class EditorCanvas extends JPanel {
         setBorder(BorderFactory.createLineBorder(new Color(0x000000)));
         layeredPane=new JLayeredPane();
         layeredPane.setLayout(new FillLayout());
-        layeredPane.setBorder(BorderFactory.createLineBorder(new Color(0xDA0000)));
         imagePanel=new ImageLabel(Utils.Fit.FIT, Utils.Center.CENTER,null);
 
         layeredPane.add(imagePanel, Integer.valueOf(0));
